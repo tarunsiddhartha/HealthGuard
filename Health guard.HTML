@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthGuard - Vaccination Management, Facility Locator & Emergency Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo::before {
+            content: "🛡";
+            margin-right: 0.5rem;
+            font-size: 2.2rem;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        .emergency-btn {
+            background: #dc3545 !important;
+            color: white !important;
+            padding: 10px 20px !important;
+            border-radius: 25px !important;
+            font-weight: bold !important;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(220, 53, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0); }
+        }
+
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            color: white;
+            padding: 120px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="rgba(255,255,255,0.05)"><polygon points="0,100 0,0 1000,100"/></svg>');
+            background-size: cover;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.8rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .hero-feature {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            min-width: 200px;
+            transition: transform 0.3s;
+        }
+
+        .hero-feature:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .hero-feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-feature h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .btn {
+            padding: 18px 35px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-emergency {
+            background: #dc3545;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        /* Main Services Section */
+        .services {
+            padding: 120px 0;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #2c5aa0;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 4rem;
+            color: #666;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 4rem;
+            margin-top: 5rem;
+        }
+
+        .service-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border-top: 5px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #28a745, #20c997);
+        }
+
+        .service-card.vaccination::before {
+            background: linear-gradient(90deg, #28a745, #20c997);
+        }
+
+        .service-card.locator::before {
+            background: linear-gradient(90deg, #007bff, #0056b3);
+        }
+
+        .service-card.emergency::before {
+            background: linear-gradient(90deg, #dc3545, #c82333);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .service-card p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .service-features li {
+            padding: 0.5rem 0;
+            color: #666;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 0.5rem;
+        }
+
+        .service-features li::before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .service-btn {
+            background: #2c5aa0;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+
+        .service-btn:hover {
+            background: #1e3a5f;
+            transform: translateY(-2px);
+        }
+
+        /* Facility Locator Map Section */
+        .facility-locator {
+            padding: 100px 0;
+            background: #f8f9fa;
+        }
+
+        .map-controls {
+            margin-bottom: 3rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        #location-search {
+            flex: 1;
+            min-width: 300px;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #location-search:focus {
+            border-color: #2c5aa0;
+        }
+
+        .location-btn {
+            padding: 15px 25px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .location-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .facility-filters {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .filter-btn:hover {
+            border-color: #2c5aa0;
+            color: #2c5aa0;
+        }
+
+        .filter-btn.active {
+            background: #2c5aa0;
+            color: white;
+            border-color: #2c5aa0;
+        }
+
+        .map-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            height: 600px;
+            margin-bottom: 2rem;
+        }
+
+        #healthcare-map {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: #666;
+            position: relative;
+        }
+
+        .facility-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .facility-panel h3 {
+            color: #2c5aa0;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            text-align: center;
+        }
+
+        .facility-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+        }
+
+        .facility-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+            border-left-color: #2c5aa0;
+        }
+
+        .facility-item.hospital {
+            border-left-color: #dc3545;
+        }
+
+        .facility-item.clinic {
+            border-left-color: #007bff;
+        }
+
+        .facility-item.pharmacy {
+            border-left-color: #28a745;
+        }
+
+        .facility-item.emergency {
+            border-left-color: #ffc107;
+        }
+
+        .facility-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .facility-type {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .facility-distance {
+            color: #2c5aa0;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .facility-address {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .facility-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .facility-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .facility-btn.directions {
+            background: #007bff;
+            color: white;
+        }
+
+        .facility-btn.call {
+            background: #28a745;
+            color: white;
+        }
+
+        .facility-btn.info {
+            background: #6c757d;
+            color: white;
+        }
+
+        .facility-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .map-legend {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .legend-icon {
+            font-size: 1.5rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        /* Mock Google Map Styling */
+        .mock-map {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #4285f4 0%, #34a853 25%, #fbbc05 50%, #ea4335 75%, #4285f4 100%);
+            background-size: 400% 400%;
+            animation: mapAnimation 10s ease infinite;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        @keyframes mapAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .map-markers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .map-marker {
+            position: absolute;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        .map-marker.hospital {
+            top: 20%;
+            left: 30%;
+            animation-delay: 0s;
+        }
+
+        .map-marker.clinic {
+            top: 60%;
+            left: 70%;
+            animation-delay: 0.5s;
+        }
+
+        .map-marker.pharmacy {
+            top: 40%;
+            left: 50%;
+            animation-delay: 1s;
+        }
+
+        .map-marker.emergency {
+            top: 70%;
+            left: 20%;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Loading spinner for map */
+        .map-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #2c5aa0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Responsive Design for Map */
+        @media (max-width: 768px) {
+            .map-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+
+            #healthcare-map {
+                height: 400px;
+            }
+
+            .facility-panel {
+                max-height: 300px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            #location-search {
+                min-width: 100%;
+            }
+
+            .facility-filters {
+                justify-content: flex-start;
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            .map-legend {
+                gap: 1rem;
+            }
+
+            .legend-item {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .facility-locator {
+                padding: 60px 0;
+            }
+
+            .map-controls {
+                padding: 1rem;
+            }
+
+            .facility-panel {
+                padding: 1rem;
+            }
+
+            .facility-item {
+                padding: 1rem;
+            }
+
+            .map-legend {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+        .how-it-works {
+            padding: 120px 0;
+            background: white;
+        }
+
+        .workflow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 5rem;
+        }
+
+        .workflow-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .workflow-step::after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            right: -50%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #2c5aa0, transparent);
+            z-index: -1;
+        }
+
+        .workflow-step:last-child::after {
+            display: none;
+        }
+
+        .step-number {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .workflow-step h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .workflow-step p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Statistics Section */
+        .stats {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e3a5f 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Emergency Action Section */
+        .emergency-action {
+            padding: 100px 0;
+            background: #dc3545;
+            color: white;
+            text-align: center;
+        }
+
+        .emergency-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .emergency-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .emergency-content p {
+            font-size: 1.3rem;
+            margin-bottom: 3rem;
+            opacity: 0.95;
+        }
+
+        .emergency-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .emergency-btn-large {
+            background: white;
+            color: #dc3545;
+            padding: 20px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            border: 3px solid white;
+        }
+
+        .emergency-btn-large:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #f8f9fa;
+        }
+
+        .emergency-btn-large:active {
+            transform: translateY(-1px);
+            background: #dc3545;
+            color: white;
+        }
+
+
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: #2c5aa0;
+            font-size: 1.3rem;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.8rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            color: #999;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #2c5aa0;
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-features {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .workflow {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-step::after {
+                display: none;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .emergency-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 80px 0;
+            }
+
+            .services {
+                padding: 80px 0;
+            }
+
+            .service-card {
+                padding: 2rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav class="container">
+            <div class="logo">HealthGuard</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#facility-locator">Find Facilities</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="tel:911" class="emergency-btn" onclick="return confirm('Call Emergency Services (911)?')">🚨 Emergency</a></li>
+            </ul>
+            <div class="mobile-menu">☰</div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Your Health, Our Priority</h1>
+                <div class="hero-subtitle">Comprehensive Healthcare Services at Your Fingertips</div>
+                <p>Access vaccination management, find nearby healthcare facilities, and get emergency assistance instantly. Designed specifically for rural communities with reliable, life-saving healthcare technology.</p>
+                
+                <div class="hero-features">
+                    <div class="hero-feature">
+                        <div class="hero-feature-icon">💉</div>
+                        <h3>Smart Vaccination</h3>
+                        <p>Never miss a dose</p>
+                    </div>
+                    <div class="hero-feature">
+                        <div class="hero-feature-icon">📍</div>
+                        <h3>Find Care Nearby</h3>
+                        <p>Instant facility locator</p>
+                    </div>
+                    <div class="hero-feature">
+                        <div class="hero-feature-icon">🚨</div>
+                        <h3>Emergency Ready</h3>
+                        <p>24/7 immediate help</p>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="#services" class="btn btn-primary">Explore Services</a>
+                    <a href="#services" class="btn btn-secondary">Learn More</a>
+                    <a href="tel:911" class="btn btn-emergency" onclick="return confirm('Call Emergency Services (911)?')">🚨 Emergency Help</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2 class="section-title">Essential Healthcare Services</h2>
+            <p class="section-subtitle">Three critical services designed to save lives and improve health outcomes in rural communities</p>
+            
+            <div class="services-grid">
+                <!-- Vaccination Management -->
+                <div class="service-card vaccination fade-in">
+                    <div class="service-icon">💉</div>
+                    <h3>Vaccination Management</h3>
+                    <p>Complete immunization tracking and scheduling system that ensures you and your family never miss critical vaccinations.</p>
+                    
+                    <ul class="service-features">
+                        <li>Automated vaccination reminders</li>
+                        <li>Digital immunization records</li>
+                        <li>Age-appropriate vaccine schedules</li>
+                        <li>Vaccine availability alerts</li>
+                        <li>Family vaccination tracking</li>
+                        <li>WHO-approved vaccine calendar</li>
+                    </ul>
+                    
+                    <a href="#vaccination-details" class="service-btn">Manage Vaccinations</a>
+                </div>
+
+                <!-- Facility Locator -->
+                <div class="service-card locator fade-in">
+                    <div class="service-icon">📍</div>
+                    <h3>Nearest Facility Locator</h3>
+                    <p>Instantly find the closest healthcare facilities, pharmacies, and specialists with real-time availability and directions.</p>
+                    
+                    <ul class="service-features">
+                        <li>GPS-based facility search</li>
+                        <li>Real-time facility availability</li>
+                        <li>Specialist doctor locations</li>
+                        <li>Pharmacy and medicine finder</li>
+                        <li>Turn-by-turn directions</li>
+                        <li>Facility ratings and reviews</li>
+                    </ul>
+                    
+                    <a href="#facility-locator" class="service-btn">Find Facilities</a>
+                </div>
+
+                <!-- Emergency Services -->
+                <div class="service-card emergency fade-in">
+                    <div class="service-icon">🚨</div>
+                    <h3>Emergency Services</h3>
+                    <p>24/7 emergency response system with instant ambulance dispatch, emergency contacts, and critical health information sharing.</p>
+                    
+                    <ul class="service-features">
+                        <li>One-touch emergency calling</li>
+                        <li>Automatic location sharing</li>
+                        <li>Real-time ambulance tracking</li>
+                        <li>Emergency contact alerts</li>
+                        <li>Medical history quick access</li>
+                        <li>Multilingual emergency support</li>
+                    </ul>
+                    
+                    <a href="#emergency" class="service-btn" style="background: #dc3545;">Emergency Help</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Facility Locator Map Section -->
+    <section id="facility-locator" class="facility-locator">
+        <div class="container">
+            <h2 class="section-title">Find Healthcare Facilities Near You</h2>
+            <p class="section-subtitle">Locate hospitals, clinics, pharmacies, and specialists with real-time directions and availability</p>
+            
+            <!-- Search and Filter Controls -->
+            <div class="map-controls">
+                <div class="search-box">
+                    <input type="text" id="location-search" placeholder="Enter your location or use current location">
+                    <button id="current-location" class="location-btn">📍 Use My Location</button>
+                </div>
+                
+                <div class="facility-filters">
+                    <button class="filter-btn active" data-type="all">🏥 All Facilities</button>
+                    <button class="filter-btn" data-type="hospital">🏥 Hospitals</button>
+                    <button class="filter-btn" data-type="clinic">🏢 Clinics</button>
+                    <button class="filter-btn" data-type="pharmacy">💊 Pharmacies</button>
+                    <button class="filter-btn" data-type="emergency">🚨 Emergency</button>
+                </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="map-container">
+                <div id="healthcare-map"></div>
+                
+                <!-- Facility List Panel -->
+                <div class="facility-panel">
+                    <h3>Nearby Facilities</h3>
+                    <div id="facility-list">
+                        <!-- Facilities will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Legend -->
+            <div class="map-legend">
+                <div class="legend-item">
+                    <span class="legend-icon hospital">🏥</span>
+                    <span>Hospitals</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon clinic">🏢</span>
+                    <span>Clinics</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon pharmacy">💊</span>
+                    <span>Pharmacies</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-icon emergency">🚨</span>
+                    <span>Emergency Centers</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How HealthGuard Works</h2>
+            <p class="section-subtitle">Simple, fast, and reliable healthcare access in just a few steps</p>
+            
+            <div class="workflow">
+                <div class="workflow-step fade-in">
+                    <div class="step-number">1</div>
+                    <h3>Download & Setup</h3>
+                    <p>Download the app, create your profile, and add family members. The setup takes less than 5 minutes and works offline.</p>
+                </div>
+                
+                <div class="workflow-step fade-in">
+                    <div class="step-number">2</div>
+                    <h3>Choose Your Service</h3>
+                    <p>Select from vaccination management, facility locator, or emergency services based on your immediate healthcare needs.</p>
+                </div>
+                
+                <div class="workflow-step fade-in">
+                    <div class="step-number">3</div>
+                    <h3>Get Instant Results</h3>
+                    <p>Receive real-time information, directions, appointments, or emergency assistance with professional healthcare support.</p>
+                </div>
+                
+                <div class="workflow-step fade-in">
+                    <div class="step-number">4</div>
+                    <h3>Track & Follow Up</h3>
+                    <p>Monitor your health journey with digital records, appointment tracking, and continuous care coordination.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats">
+        <div class="container">
+            <h2 class="section-title">Lives Saved, Health Improved</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.9;">Real impact in rural healthcare delivery</p>
+            
+            <div class="stats-grid">
+                <div class="stat-item fade-in">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">Vaccination Compliance Rate</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">30sec</div>
+                    <div class="stat-label">Average Emergency Response</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Healthcare Facilities Mapped</div>
+                </div>
+                <div class="stat-item fade-in">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Emergency Support Available</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Action Section -->
+    <section id="emergency" class="emergency-action">
+        <div class="container">
+            <div class="emergency-content">
+                <h2>🚨 Emergency Medical Assistance</h2>
+                <p>In a medical emergency, every second counts. Get immediate help with one tap and connect instantly to emergency services.</p>
+                
+                <div class="emergency-buttons">
+                    <a href="tel:911" class="emergency-btn-large" id="emergency-call">
+                        <span>📞</span>
+                        Call Emergency Services
+                    </a>
+                    <a href="tel:911" class="emergency-btn-large">
+                        <span>🚑</span>
+                        Request Ambulance
+                    </a>
+                    <a href="tel:+18002221222" class="emergency-btn-large">
+                        <span>☠</span>
+                        Poison Control
+                    </a>
+                </div>
+                
+                <p style="margin-top: 2rem; font-size: 1.1rem;">For non-emergency medical questions, use our 24/7 healthcare hotline: <strong><a href="tel:+15551234325" style="color: white; text-decoration: underline;">(555) 123-HEALTH</a></strong></p>
+                
+                <div style="margin-top: 2rem; padding: 1rem; background: rgba(255,255,255,0.1); border-radius: 10px;">
+                    <h4 style="margin-bottom: 1rem;">Quick Emergency Numbers:</h4>
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+                        <a href="tel:911" style="color: white; text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.2); border-radius: 5px;">🚨 Emergency: 911</a>
+                        <a href="tel:+18002221222" style="color: white; text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.2); border-radius: 5px;">☠ Poison: 1-800-222-1222</a>
+                        <a href="tel:988" style="color: white; text-decoration: none; padding: 0.5rem 1rem; background: rgba(255,255,255,0.2); border-radius: 5px;">🧠 Crisis: 988</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>HealthGuard</h3>
+                    <p>Empowering rural communities with essential healthcare services through innovative mobile technology.</p>
+                    <p style="margin-top: 1rem; color: #2c5aa0; font-weight: bold;">Save Lives. Improve Health. Anytime, Anywhere.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Quick Access</h3>
+                    <a href="#services">Vaccination Management</a>
+                    <a href="#facility-locator">Facility Locator</a>
+                    <a href="#emergency">Emergency Services</a>
+                    <a href="#how-it-works">How It Works</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Emergency Contacts</h3>
+                    <a href="tel:911">🚨 Emergency: 911</a>
+                    <a href="tel:+15551234325">📞 Health Hotline: (555) 123-HEALTH</a>
+                    <a href="tel:+18002221222">☠ Poison Control: 1-800-222-1222</a>
+                    <a href="tel:988">🧠 Crisis Hotline: 988</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Support & Legal</h3>
+                    <a href="#">Help Center</a>
+                    <a href="#">Contact Support</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Medical Disclaimer</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 HealthGuard. All rights reserved. | Certified Healthcare Technology Platform</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Mobile menu toggle
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenu.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Fade in animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Enhanced hover effects
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-15px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Emergency button special effect
+        document.querySelectorAll('.emergency-btn, .btn-emergency').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Add shake animation
+                btn.style.animation = 'none';
+                setTimeout(() => {
+                    btn.style.animation = 'pulse 2s infinite';
+                }, 100);
+            });
+        });
+
+        // Statistics counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = counter.textContent;
+                if (target.includes('%')) {
+                    const number = parseInt(target);
+                    animateValue(counter, 0, number, 2000, '%');
+                } else if (target.includes('sec')) {
+                    animateValue(counter, 0, 30, 1500, 'sec');
+                } else if (target.includes('+')) {
+                    const number = parseInt(target);
+                    animateValue(counter, 0, number, 2500, '+');
+                } else if (target === '24/7') {
+                    counter.textContent = '24/7';
+                }
+            });
+        }
+
+        function animateValue(element, start, end, duration, suffix = '') {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                element.textContent = value + suffix;
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Trigger counter animation when stats section is visible
+        const statsSection = document.querySelector('.stats');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statsObserver.observe(statsSection);
+
+        // Initialize Facility Locator Map (Mock Implementation)
+        function initializeFacilityLocator() {
+            const mapContainer = document.getElementById('healthcare-map');
+            const facilityList = document.getElementById('facility-list');
+
+            // Mock healthcare facilities data
+            const facilities = [
+                {
+                    id: 1,
+                    name: "Hyderabad General Hospital",
+                    type: "hospital",
+                    distance: "0.8 km",
+                    address: "Basheer Bagh, Hyderabad, Telangana 500001",
+                    phone: "+91-40-2323-4567",
+                    emergency: true,
+                    coordinates: { lat: 17.3850, lng: 78.4867 }
+                },
+                {
+                    id: 2,
+                    name: "Apollo Pharmacy",
+                    type: "pharmacy",
+                    distance: "0.3 km",
+                    address: "Road No. 36, Jubilee Hills, Hyderabad 500033",
+                    phone: "+91-40-4567-8901",
+                    emergency: false,
+                    coordinates: { lat: 17.4399, lng: 78.4983 }
+                },
+                {
+                    id: 3,
+                    name: "Care Hospital",
+                    type: "hospital",
+                    distance: "1.2 km",
+                    address: "Road No. 1, Banjara Hills, Hyderabad 500034",
+                    phone: "+91-40-6120-6120",
+                    emergency: true,
+                    coordinates: { lat: 17.4065, lng: 78.4691 }
+                },
+                {
+                    id: 4,
+                    name: "Medplus Clinic",
+                    type: "clinic",
+                    distance: "0.6 km",
+                    address: "Somajiguda, Hyderabad, Telangana 500082",
+                    phone: "+91-40-2789-0123",
+                    emergency: false,
+                    coordinates: { lat: 17.4239, lng: 78.4738 }
+                },
+                {
+                    id: 5,
+                    name: "Emergency Care Center",
+                    type: "emergency",
+                    distance: "0.4 km",
+                    address: "Ameerpet, Hyderabad, Telangana 500016",
+                    phone: "+91-40-2345-6789",
+                    emergency: true,
+                    coordinates: { lat: 17.4374, lng: 78.4482 }
+                },
+                {
+                    id: 6,
+                    name: "Sunshine Pharmacy",
+                    type: "pharmacy",
+                    distance: "0.9 km",
+                    address: "Begumpet, Hyderabad, Telangana 500016",
+                    phone: "+91-40-2760-1234",
+                    emergency: false,
+                    coordinates: { lat: 17.4435, lng: 78.4584 }
+                },
+                {
+                    id: 7,
+                    name: "Rainbow Children's Hospital",
+                    type: "hospital",
+                    distance: "1.5 km",
+                    address: "Vikrampuri Colony, Secunderabad 500009",
+                    phone: "+91-40-4455-5555",
+                    emergency: true,
+                    coordinates: { lat: 17.4499, lng: 78.4896 }
+                },
+                {
+                    id: 8,
+                    name: "Family Health Clinic",
+                    type: "clinic",
+                    distance: "0.7 km",
+                    address: "Kondapur, Hyderabad, Telangana 500084",
+                    phone: "+91-40-2312-5678",
+                    emergency: false,
+                    coordinates: { lat: 17.4647, lng: 78.3911 }
+                }
+            ];
+
+            let filteredFacilities = [...facilities];
+
+            // Create mock map with markers
+            function renderMap() {
+                mapContainer.innerHTML = `
+                    <div class="mock-map">
+                        <div class="map-loading"></div>
+                        <div style="z-index: 2; position: relative;">
+                            📍 Interactive Healthcare Facility Map<br>
+                            <small style="opacity: 0.9;">Click facilities in the panel for directions</small>
+                        </div>
+                        <div class="map-markers">
+                            <div class="map-marker hospital">🏥</div>
+                            <div class="map-marker clinic">🏢</div>
+                            <div class="map-marker pharmacy">💊</div>
+                            <div class="map-marker emergency">🚨</div>
+                        </div>
+                    </div>
+                `;
+
+                // Remove loading spinner after 1 second
+                setTimeout(() => {
+                    const loading = mapContainer.querySelector('.map-loading');
+                    if (loading) loading.remove();
+                }, 1000);
+            }
+
+            // Render facility list
+            function renderFacilities() {
+                facilityList.innerHTML = '';
+                
+                if (filteredFacilities.length === 0) {
+                    facilityList.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No facilities found for the selected filter.</p>';
+                    return;
+                }
+
+                filteredFacilities.forEach(facility => {
+                    const facilityElement = document.createElement('div');
+                    facilityElement.className = facility-item ${facility.type};
+                    facilityElement.innerHTML = `
+                        <div class="facility-name">${facility.name}</div>
+                        <div class="facility-type">${facility.type.toUpperCase()}</div>
+                        <div class="facility-distance">${facility.distance} away</div>
+                        <div class="facility-address">${facility.address}</div>
+                        <div class="facility-actions">
+                            <a href="https://maps.google.com/maps?q=${facility.coordinates.lat},${facility.coordinates.lng}" target="_blank" class="facility-btn directions">🗺 Directions</a>
+                            <a href="tel:${facility.phone}" class="facility-btn call">📞 Call</a>
+                            <button class="facility-btn info" onclick="showFacilityInfo(${facility.id})">ℹ Info</button>
+                        </div>
+                    `;
+
+                    // Add click event to highlight facility on map
+                    facilityElement.addEventListener('click', () => {
+                        highlightFacility(facility);
+                    });
+
+                    facilityList.appendChild(facilityElement);
+                });
+            }
+
+            // Highlight facility on map (visual feedback)
+            function highlightFacility(facility) {
+                // Remove existing highlights
+                document.querySelectorAll('.facility-item').forEach(item => {
+                    item.style.backgroundColor = '';
+                    item.style.transform = '';
+                });
+
+                // Highlight selected facility
+                event.currentTarget.style.backgroundColor = '#e3f2fd';
+                event.currentTarget.style.transform = 'translateX(10px)';
+
+                // Show facility info on map
+                const mapOverlay = document.createElement('div');
+                mapOverlay.style.cssText = `
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    background: white;
+                    padding: 1rem;
+                    border-radius: 10px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    z-index: 10;
+                    max-width: 250px;
+                `;
+                mapOverlay.innerHTML = `
+                    <div style="font-weight: bold; color: #2c5aa0; margin-bottom: 0.5rem;">${facility.name}</div>
+                    <div style="color: #666; font-size: 0.9rem; margin-bottom: 0.5rem;">${facility.address}</div>
+                    <div style="color: #28a745; font-weight: bold;">${facility.distance} away</div>
+                `;
+
+                // Remove existing overlays
+                mapContainer.querySelectorAll('[style*="position: absolute"]').forEach(overlay => {
+                    if (overlay.style.top === '10px') overlay.remove();
+                });
+
+                mapContainer.appendChild(mapOverlay);
+
+                // Auto-remove overlay after 5 seconds
+                setTimeout(() => {
+                    if (mapOverlay.parentNode) {
+                        mapOverlay.remove();
+                    }
+                }, 5000);
+            }
+
+            // Filter functionality
+            function setupFilters() {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                
+                filterButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        // Update active state
+                        filterButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+
+                        // Filter facilities
+                        const filterType = btn.dataset.type;
+                        if (filterType === 'all') {
+                            filteredFacilities = [...facilities];
+                        } else {
+                            filteredFacilities = facilities.filter(f => f.type === filterType);
+                        }
+
+                        renderFacilities();
+                    });
+                });
+            }
+
+            // Location search functionality
+            function setupLocationSearch() {
+                const searchInput = document.getElementById('location-search');
+                const currentLocationBtn = document.getElementById('current-location');
+
+                searchInput.addEventListener('input', (e) => {
+                    const searchTerm = e.target.value.toLowerCase();
+                    filteredFacilities = facilities.filter(f => 
+                        f.name.toLowerCase().includes(searchTerm) ||
+                        f.address.toLowerCase().includes(searchTerm) ||
+                        f.type.toLowerCase().includes(searchTerm)
+                    );
+                    renderFacilities();
+                });
+
+                currentLocationBtn.addEventListener('click', () => {
+                    currentLocationBtn.innerHTML = '📍 Locating...';
+                    currentLocationBtn.disabled = true;
+
+                    // Mock geolocation
+                    setTimeout(() => {
+                        searchInput.value = 'Hyderabad, Telangana (Current Location)';
+                        currentLocationBtn.innerHTML = '✓ Location Found';
+                        
+                        // Re-sort facilities by distance (mock)
+                        facilities.sort(() => Math.random() - 0.5);
+                        filteredFacilities = [...facilities];
+                        renderFacilities();
+
+                        setTimeout(() => {
+                            currentLocationBtn.innerHTML = '📍 Use My Location';
+                            currentLocationBtn.disabled = false;
+                        }, 2000);
+                    }, 1500);
+                });
+            }
+
+            // Initialize everything
+            renderMap();
+            renderFacilities();
+            setupFilters();
+            setupLocationSearch();
+
+            // Add global function for facility info
+            window.showFacilityInfo = function(facilityId) {
+                const facility = facilities.find(f => f.id === facilityId);
+                alert(${facility.name}\n\nType: ${facility.type.toUpperCase()}\nDistance: ${facility.distance}\nPhone: ${facility.phone}\nAddress: ${facility.address}\n\n${facility.emergency ? '✅ Emergency services available' : '❌ No emergency services'});
+            };
+        }
+
+        // Initialize facility locator when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initializeFacilityLocator, 1000);
+        });
+
+        // Enhanced emergency features - All buttons now functional
+        document.querySelectorAll('.emergency-btn-large').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Add visual feedback when emergency button is clicked
+                btn.style.background = '#dc3545';
+                btn.style.color = 'white';
+                btn.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    btn.style.background = 'white';
+                    btn.style.color = '#dc3545';
+                    btn.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Add feedback for header emergency button
+        document.querySelector('.emergency-btn').addEventListener('click', function() {
+            this.style.background = 'rgba(255,255,255,0.3)';
+            setTimeout(() => {
+                this.style.background = '#dc3545';
+            }, 200);
+        });
+    </script>
+</body>
+</html>
